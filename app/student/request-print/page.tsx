@@ -1,4 +1,14 @@
+"use client";
+import { useState } from "react";
+import Link from "next/link";
+import PrimaryButton from "@/components/PrimaryButton";
+
+
 export default function RequestPrintPage() {
+  const [file, setFile] = useState<File | null>(null);
+  const [fromPage, setFromPage] = useState("");
+  const [toPage, setToPage] = useState("");
+
   return (
     <div className="min-h-screen bg-slate-50 p-6 flex justify-center">
       <div className="w-full max-w-xl">
@@ -10,6 +20,12 @@ export default function RequestPrintPage() {
           <p className="text-slate-500 mt-1">
             Upload your file and choose print options
           </p>
+          <Link
+            href="/student"
+            className="inline-block mt-3 text-sm text-blue-600 hover:underline"
+          >
+            ← Back to Dashboard
+          </Link>
         </div>
 
         {/* Form Card */}
@@ -22,6 +38,7 @@ export default function RequestPrintPage() {
             <input
               type="file"
               accept=".pdf"
+              onChange={(e) => setFile(e.target.files?.[0] || null)}
               className="block w-full text-sm text-slate-600
                          file:mr-4 file:py-2 file:px-4
                          file:rounded-md file:border-0
@@ -38,8 +55,13 @@ export default function RequestPrintPage() {
               </label>
               <input
                 type="number"
+                value={fromPage}
                 placeholder="1"
-                className="w-full border border-slate-300 rounded-md p-2"
+                onChange={(e) => setFromPage(e.target.value)}
+                className="w-full border border-slate-300 rounded-md p-2
+           focus:outline-none focus:ring-2 focus:ring-blue-200
+           focus:border-blue-500"
+
               />
             </div>
 
@@ -49,8 +71,13 @@ export default function RequestPrintPage() {
               </label>
               <input
                 type="number"
+                value={toPage}
                 placeholder="10"
-                className="w-full border border-slate-300 rounded-md p-2"
+                onChange={(e) => setToPage(e.target.value)}
+                className="w-full border border-slate-300 rounded-md p-2
+           focus:outline-none focus:ring-2 focus:ring-blue-200
+           focus:border-blue-500"
+
               />
             </div>
           </div>
@@ -63,7 +90,10 @@ export default function RequestPrintPage() {
             <input
               type="number"
               placeholder="1"
-              className="w-full border border-slate-300 rounded-md p-2"
+              className="w-full border border-slate-300 rounded-md p-2
+           focus:outline-none focus:ring-2 focus:ring-blue-200
+           focus:border-blue-500"
+
             />
           </div>
 
@@ -85,12 +115,11 @@ export default function RequestPrintPage() {
           </div>
 
           {/* Submit */}
-          <button
-            className="w-full bg-blue-600 text-white py-2.5 rounded-md
-                       hover:bg-blue-700 transition"
-          >
-            Submit Print Request
-          </button>
+          <PrimaryButton disabled={!file || !fromPage || !toPage}>
+  Submit Print Request
+</PrimaryButton>
+
+
         </div>
       </div>
     </div>
