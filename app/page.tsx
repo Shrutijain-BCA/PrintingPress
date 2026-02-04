@@ -1,4 +1,6 @@
 import Image from "next/image";
+import StudentNavbar from "@/components/StudentNavbar";
+
 
 export default function Home() {
   return (

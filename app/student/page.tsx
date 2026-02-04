@@ -1,10 +1,41 @@
 import Link from "next/link";
 import StatusBadge from "@/components/StatusBadge";
+import StudentNavbar from "@/components/StudentNavbar";
+
+
+type Status = "pending" | "preparing" | "ready";
+
+const dummyRequests: {
+  id: number;
+  type: string;
+  description: string;
+  status: Status;
+}[] = [
+  {
+    id: 1,
+    type: "Print Request",
+    description: "notes.pdf • 10 pages",
+    status: "preparing",
+  },
+  {
+    id: 2,
+    type: "Stationery",
+    description: "Blue Pen • Qty 2",
+    status: "ready",
+  },
+  {
+    id: 3,
+    type: "Print Request",
+    description: "assignment.pdf • 5 pages",
+    status: "pending",
+  },
+];
 
 export default function StudentDashboard() {
   const hasRequests = true;
   return (
     <div className="min-h-screen bg-slate-50 p-6">
+      <StudentNavbar />
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-semibold text-slate-900">
@@ -35,13 +66,13 @@ export default function StudentDashboard() {
         </Link>
 
         <Link
-          href="/student/request-stationery"
+          href="/student/request-stationary"
           className="bg-white border border-slate-200 rounded-lg p-6
              hover:shadow-md hover:border-slate-300
              transition cursor-pointer"
         >
           <h2 className="text-lg font-medium text-slate-900">
-            ✏️ Request Stationery
+            ✏️ Request Stationary
           </h2>
           <p className="text-sm text-slate-500 mt-1">
             Pens, notebooks, files and more
@@ -57,42 +88,31 @@ export default function StudentDashboard() {
 
         <div className="space-y-3">
           {hasRequests ? (
-  <div className="space-y-3">
-    {/* Request Item */}
-    <div className="bg-white border border-slate-200 rounded-lg p-4 flex justify-between items-center">
-      <div>
-        <p className="font-medium text-slate-900">Print Request</p>
-        <p className="text-sm text-slate-500">notes.pdf • 10 pages</p>
-      </div>
-      <StatusBadge status="preparing" />
-    </div>
+            <div className="space-y-3">
+              {dummyRequests.map((req) => (
+                <div
+                  key={req.id}
+                  className="bg-white border border-slate-200 rounded-lg p-4 flex justify-between items-center"
+                >
+                  <div>
+                    <p className="font-medium text-slate-900">{req.type}</p>
+                    <p className="text-sm text-slate-500">{req.description}</p>
+                  </div>
+                  <StatusBadge status={req.status} />
+                </div>
+              ))}
+            </div>
 
-    <div className="bg-white border border-slate-200 rounded-lg p-4 flex justify-between items-center">
-      <div>
-        <p className="font-medium text-slate-900">Stationery</p>
-        <p className="text-sm text-slate-500">Blue Pen • Qty 2</p>
-      </div>
-      <StatusBadge status="ready" />
-    </div>
-
-    <div className="bg-white border border-slate-200 rounded-lg p-4 flex justify-between items-center">
-      <div>
-        <p className="font-medium text-slate-900">Print Request</p>
-        <p className="text-sm text-slate-500">assignment.pdf • 5 pages</p>
-      </div>
-      <StatusBadge status="pending" />
-    </div>
-  </div>
-) : (
-  <div className="bg-white border border-slate-200 rounded-lg p-6 text-center">
-    <p className="text-slate-600">
-      You haven’t made any requests yet.
-    </p>
-    <p className="text-sm text-slate-500 mt-1">
-      Start by requesting a print or stationery item.
-    </p>
-  </div>
-)}
+          ) : (
+            <div className="bg-white border border-slate-200 rounded-lg p-6 text-center">
+              <p className="text-slate-600">
+                You haven’t made any requests yet.
+              </p>
+              <p className="text-sm text-slate-500 mt-1">
+                Start by requesting a print or stationery item.
+              </p>
+            </div>
+          )}
 
         </div>
       </div>

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import PrimaryButton from "@/components/PrimaryButton";
+import StudentNavbar from "@/components/StudentNavbar";
 
 export default function RequestStationeryPage() {
     const [item, setItem] = useState("");
@@ -9,6 +10,7 @@ export default function RequestStationeryPage() {
 
     return (
         <div className="min-h-screen bg-slate-50 p-6 flex justify-center">
+            <StudentNavbar />
             <div className="w-full max-w-xl">
                 {/* Header */}
                 <div className="mb-6">
