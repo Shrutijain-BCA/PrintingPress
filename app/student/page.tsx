@@ -19,24 +19,32 @@ export default function StudentDashboard() {
   const [requests, setRequests] = useState<PrintRequest[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchRequests = async () => {
-      try {
-        const studentId = "698312ef6ced30d7d9a18351";
+useEffect(() => {
+  const fetchRequests = async () => {
+    try {
+      const studentId = "698312ef6ced30d7d9a18351";
 
-        const res = await fetch(`/api/print?studentId=${studentId}`);
-        const data = await res.json();
+      const res = await fetch(`/api/print?studentId=${studentId}`);
+      const data = await res.json();
 
-        setRequests(data.data || []);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+      setRequests(data.data || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchRequests();
-  }, []);
+  // initial fetch
+  fetchRequests();
+
+  // 🔁 poll every 5 seconds
+  const interval = setInterval(fetchRequests, 5000);
+
+  // 🧹 cleanup on unmount
+  return () => clearInterval(interval);
+}, []);
+
 
 
   return (
