@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import StudentNavbar from "@/components/StudentNavbar";
+import ShopNavbar from "@/components/ShopNavbar";
 import StatusBadge from "@/components/StatusBadge";
 
 type Status = "pending" | "preparing" | "ready";
@@ -49,7 +49,7 @@ export default function ShopDashboard() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <StudentNavbar />
+      <ShopNavbar />
 
       <div className="p-6">
         <h1 className="text-2xl font-semibold text-slate-900">
