@@ -3,15 +3,60 @@ import { useState } from "react";
 import Link from "next/link";
 import PrimaryButton from "@/components/PrimaryButton";
 import StudentNavbar from "@/components/StudentNavbar";
+import { useRouter } from "next/navigation";
 
 
 export default function RequestPrintPage() {
   const [file, setFile] = useState<File | null>(null);
+  const router = useRouter();
   const [fromPage, setFromPage] = useState("");
   const [toPage, setToPage] = useState("");
+  const [copies, setCopies] = useState("1");
+  const [printType, setPrintType] = useState<"bw" | "color">("bw");
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+
+      // TEMP studentId (same one you used earlier)
+      const studentId = "698312ef6ced30d7d9a18351";
+
+      const res = await fetch("/api/print", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          studentId,
+          fileUrl: "https://example.com/dummy.pdf", // file upload later
+          fromPage: Number(fromPage),
+          toPage: Number(toPage),
+          copies: Number(copies),
+          printType,
+        }),
+      });
+
+      if (!res.ok) {
+        alert("Failed to submit print request");
+        return;
+      }
+
+      // success → go back to dashboard
+      router.push("/student");
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6 flex justify-center">
+    <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-lg p-6 space-y-5">
+      <div className="min-h-screen bg-slate-50 p-6 flex justify-center">
       <StudentNavbar />
       <div className="w-full max-w-xl">
         {/* Header */}
@@ -91,6 +136,8 @@ export default function RequestPrintPage() {
             </label>
             <input
               type="number"
+              value={copies}
+              onChange={(e) => setCopies(e.target.value)}
               placeholder="1"
               className="w-full border border-slate-300 rounded-md p-2
            focus:outline-none focus:ring-2 focus:ring-blue-200
@@ -117,13 +164,14 @@ export default function RequestPrintPage() {
           </div>
 
           {/* Submit */}
-          <PrimaryButton disabled={!file || !fromPage || !toPage}>
-  Submit Print Request
-</PrimaryButton>
+          <PrimaryButton disabled={loading || !file || !fromPage || !toPage}>
+            {loading ? "Submitting..." : "Submit Print Request"}
+          </PrimaryButton>
 
 
         </div>
       </div>
     </div>
+    </form>
   );
 }

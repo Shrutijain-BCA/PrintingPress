@@ -9,6 +9,7 @@ export default function PrimaryButton({
 }: PrimaryButtonProps) {
   return (
     <button
+      type="submit"
       disabled={disabled}
       className={`w-full py-2.5 rounded-md transition
         ${
