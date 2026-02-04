@@ -1,51 +1,60 @@
 "use client";
+import { useEffect, useState } from "react";
 
-import { useState } from "react";
 import ShopNavbar from "@/components/ShopNavbar";
 import StatusBadge from "@/components/StatusBadge";
 
 type Status = "pending" | "preparing" | "ready";
 
-type Request = {
-  id: number;
-  student: string;
-  type: string;
-  description: string;
-  status: Status;
+export default function ShopDashboard() {
+
+  const [requests, setRequests] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const res = await fetch("/api/print");
+
+        if (!res.ok) {
+          console.error("Failed to fetch print requests");
+          setRequests([]);
+          return;
+        }
+
+        const data = await res.json();
+        setRequests(data.data || []);
+      } catch (err) {
+        console.error(err);
+        setRequests([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRequests();
+  }, []);
+
+  const updateStatus = async (id: string, status: "pending" | "preparing" | "ready") => {
+  try {
+    await fetch("/api/print", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id, status }),
+    });
+
+    // refresh list
+    setRequests((prev) =>
+      prev.map((r) => (r._id === id ? { ...r, status } : r))
+    );
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-const INITIAL_REQUESTS: Request[] = [
-  {
-    id: 1,
-    student: "A123",
-    type: "Print",
-    description: "notes.pdf • 10 pages",
-    status: "pending",
-  },
-  {
-    id: 2,
-    student: "B456",
-    type: "Stationery",
-    description: "Blue Pen • Qty 2",
-    status: "preparing",
-  },
-  {
-    id: 3,
-    student: "C789",
-    type: "Print",
-    description: "assignment.pdf • 5 pages",
-    status: "ready",
-  },
-];
 
-export default function ShopDashboard() {
-  const [requests, setRequests] = useState<Request[]>(INITIAL_REQUESTS);
-
-  const updateStatus = (id: number, status: Status) => {
-    setRequests((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, status } : r))
-    );
-  };
+  
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -59,45 +68,56 @@ export default function ShopDashboard() {
           Manage print and stationery requests
         </p>
 
-        <div className="mt-6 space-y-3">
-          {requests.map((req) => (
-            <div
-              key={req.id}
-              className="bg-white border border-slate-200 rounded-lg p-4 flex justify-between items-center"
-            >
-              <div>
-                <p className="font-medium text-slate-900">
-                  {req.type} • {req.student}
-                </p>
-                <p className="text-sm text-slate-500">
-                  {req.description}
-                </p>
+        {loading ? (
+          <div className="bg-white border border-slate-200 rounded-lg p-6 text-center">
+            <p className="text-slate-500">Loading requests...</p>
+          </div>
+        ) : requests.length === 0 ? (
+          <div className="bg-white border border-slate-200 rounded-lg p-6 text-center">
+            <p className="text-slate-600">No print requests yet.</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {requests.map((req) => (
+              <div
+                key={req._id}
+                className="bg-white border border-slate-200 rounded-lg p-4 flex justify-between items-center"
+              >
+                <div>
+  <p className="font-medium text-slate-900">
+    Print • Student {req.studentId?.identifier}
+  </p>
+  <p className="text-sm text-slate-500">
+    Pages {req.fromPage} – {req.toPage}
+  </p>
+</div>
+
+<div className="flex items-center gap-3">
+  <StatusBadge status={req.status} />
+
+  {req.status === "pending" && (
+    <button
+      onClick={() => updateStatus(req._id, "preparing")}
+      className="text-sm px-3 py-1 rounded-md bg-amber-100 text-amber-700 hover:bg-amber-200 transition"
+    >
+      Prepare
+    </button>
+  )}
+
+  {req.status === "preparing" && (
+    <button
+      onClick={() => updateStatus(req._id, "ready")}
+      className="text-sm px-3 py-1 rounded-md bg-green-100 text-green-700 hover:bg-green-200 transition"
+    >
+      Mark Ready
+    </button>
+  )}
+</div>
               </div>
+            ))}
+          </div>
+        )}
 
-              <div className="flex items-center gap-3">
-                <StatusBadge status={req.status} />
-
-                {req.status === "pending" && (
-                  <button
-                    onClick={() => updateStatus(req.id, "preparing")}
-                    className="text-sm px-3 py-1 rounded-md bg-amber-100 text-amber-700 hover:bg-amber-200"
-                  >
-                    Prepare
-                  </button>
-                )}
-
-                {req.status === "preparing" && (
-                  <button
-                    onClick={() => updateStatus(req.id, "ready")}
-                    className="text-sm px-3 py-1 rounded-md bg-green-100 text-green-700 hover:bg-green-200"
-                  >
-                    Mark Ready
-                  </button>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );

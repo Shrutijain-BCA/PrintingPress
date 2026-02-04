@@ -1,38 +1,44 @@
+"use client";
 import Link from "next/link";
 import StatusBadge from "@/components/StatusBadge";
 import StudentNavbar from "@/components/StudentNavbar";
+import { useEffect, useState } from "react";
 
+type PrintRequest = {
+  _id: string;
+  fileUrl: string;
+  fromPage: number;
+  toPage: number;
+  status: Status;
+};
 
 type Status = "pending" | "preparing" | "ready";
 
-const dummyRequests: {
-  id: number;
-  type: string;
-  description: string;
-  status: Status;
-}[] = [
-  {
-    id: 1,
-    type: "Print Request",
-    description: "notes.pdf • 10 pages",
-    status: "preparing",
-  },
-  {
-    id: 2,
-    type: "Stationery",
-    description: "Blue Pen • Qty 2",
-    status: "ready",
-  },
-  {
-    id: 3,
-    type: "Print Request",
-    description: "assignment.pdf • 5 pages",
-    status: "pending",
-  },
-];
 
 export default function StudentDashboard() {
-  const hasRequests = true;
+  const [requests, setRequests] = useState<PrintRequest[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const studentId = "698312ef6ced30d7d9a18351";
+
+        const res = await fetch(`/api/print?studentId=${studentId}`);
+        const data = await res.json();
+
+        setRequests(data.data || []);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRequests();
+  }, []);
+
+
   return (
     <div className="min-h-screen bg-slate-50 p-6">
       <StudentNavbar />
@@ -81,41 +87,36 @@ export default function StudentDashboard() {
       </div>
 
       {/* Recent Requests */}
-      <div>
-        <h2 className="text-lg font-semibold text-slate-900 mb-4">
-          My Recent Requests
-        </h2>
-
-        <div className="space-y-3">
-          {hasRequests ? (
-            <div className="space-y-3">
-              {dummyRequests.map((req) => (
-                <div
-                  key={req.id}
-                  className="bg-white border border-slate-200 rounded-lg p-4 flex justify-between items-center"
-                >
-                  <div>
-                    <p className="font-medium text-slate-900">{req.type}</p>
-                    <p className="text-sm text-slate-500">{req.description}</p>
-                  </div>
-                  <StatusBadge status={req.status} />
-                </div>
-              ))}
-            </div>
-
-          ) : (
-            <div className="bg-white border border-slate-200 rounded-lg p-6 text-center">
-              <p className="text-slate-600">
-                You haven’t made any requests yet.
-              </p>
-              <p className="text-sm text-slate-500 mt-1">
-                Start by requesting a print or stationery item.
-              </p>
-            </div>
-          )}
-
+      {loading ? (
+        <div className="bg-white border border-slate-200 rounded-lg p-6 text-center">
+          <p className="text-slate-500">Loading requests...</p>
         </div>
-      </div>
+      ) : requests.length === 0 ? (
+        <div className="bg-white border border-slate-200 rounded-lg p-6 text-center">
+          <p className="text-slate-600">
+            You haven’t made any print requests yet.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {requests.map((req) => (
+            <div
+              key={req._id}
+              className="bg-white border border-slate-200 rounded-lg p-4 flex justify-between items-center"
+            >
+              <div>
+                <p className="font-medium text-slate-900">Print Request</p>
+                <p className="text-sm text-slate-500">
+                  Pages {req.fromPage} – {req.toPage}
+                </p>
+              </div>
+              <StatusBadge status={req.status} />
+            </div>
+          ))}
+        </div>
+      )}
+
+
     </div>
   );
 }
