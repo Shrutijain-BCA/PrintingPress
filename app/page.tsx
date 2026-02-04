@@ -1,19 +1,51 @@
-import Image from "next/image";
-import StudentNavbar from "@/components/StudentNavbar";
-
+"use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
-  return (
-    <main className="min-h-screen flex flex-col items-center justify-center gap-6">
-      <h1 className="text-4xl font-bold">CampusPrint</h1>
-      <p className="text-gray-600">
-        No more waiting in print queues
-      </p>
+  const router = useRouter();
 
-      <div className="flex gap-4">
-        <a href="/login" className="btn-primary">Student Login</a>
-        <a href="/login" className="btn-outline">Print Shop Login</a>
+useEffect(() => {
+  const role = localStorage.getItem("role");
+  if (role === "student") router.push("/student");
+  if (role === "shop") router.push("/shop");
+}, [router]);
+
+  return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="w-full max-w-md bg-white border border-slate-200 rounded-lg p-8 text-center">
+        <h1 className="text-2xl font-semibold text-slate-900">
+          CampusPrint
+        </h1>
+        <p className="text-slate-500 mt-2">
+          Queue-free college printing system
+        </p>
+
+        <div className="mt-8 space-y-4">
+          <button
+  onClick={() => {
+    localStorage.setItem("role", "student");
+    router.push("/student");
+  }}
+  className="block w-full bg-blue-600 text-white py-2.5 rounded-md hover:bg-blue-700 transition"
+>
+  Continue as Student
+</button>
+
+
+          <button
+  onClick={() => {
+    localStorage.setItem("role", "shop");
+    router.push("/shop");
+  }}
+  className="block w-full bg-slate-100 text-slate-900 py-2.5 rounded-md hover:bg-slate-200 transition"
+>
+  Continue as Print Shop
+</button>
+
+        </div>
       </div>
-    </main>
+    </div>
   );
 }
