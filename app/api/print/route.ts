@@ -3,7 +3,7 @@ import dbConnect from "@/lib/db";
 import PrintRequest from "@/models/PrintRequest";
 import mongoose from "mongoose";
 import "@/models/User";
-
+import { getAuthUser } from "@/lib/getAuthUser";
 
 export async function POST(req: Request) {
   try {
@@ -11,8 +11,16 @@ export async function POST(req: Request) {
 
     const body = await req.json();
 
+    const authUser = getAuthUser(req);
+
+    if (!authUser || authUser.role !== "student") {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     const {
-      studentId,
       fileUrl,
       fromPage,
       toPage,
@@ -20,21 +28,23 @@ export async function POST(req: Request) {
       printType,
     } = body;
 
-    if (!studentId || !fileUrl || !fromPage || !toPage) {
+    if (!fileUrl || !fromPage || !toPage) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
       );
     }
 
+
     const newRequest = await PrintRequest.create({
-      studentId,
+      studentId: authUser.userId,
       fileUrl,
       fromPage,
       toPage,
       copies,
       printType,
     });
+
 
     return NextResponse.json(
       { message: "Print request created", data: newRequest },
@@ -98,13 +108,6 @@ export async function PATCH(req: Request) {
       );
     }
 
-    if (!["pending", "preparing", "ready"].includes(status)) {
-      return NextResponse.json(
-        { message: "Invalid status value" },
-        { status: 400 }
-      );
-    }
-
     const updated = await PrintRequest.findByIdAndUpdate(
       id,
       { status },
@@ -130,3 +133,4 @@ export async function PATCH(req: Request) {
     );
   }
 }
+

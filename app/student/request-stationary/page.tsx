@@ -3,10 +3,52 @@ import { useState } from "react";
 import Link from "next/link";
 import PrimaryButton from "@/components/PrimaryButton";
 import StudentNavbar from "@/components/StudentNavbar";
+import { useRouter } from "next/navigation";
 
 export default function RequestStationeryPage() {
+    const router = useRouter();
+    const [loading, setLoading] = useState(false);
+
     const [item, setItem] = useState("");
     const [quantity, setQuantity] = useState("");
+    const [notes, setNotes] = useState("");
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        try {
+            setLoading(true);
+
+            // SAME studentId you used for print
+            const studentId = "PASTE_REAL_STUDENT_OBJECT_ID_HERE";
+
+            const res = await fetch("/api/stationery", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    studentId,
+                    item,
+                    quantity: Number(quantity),
+                    notes,
+                }),
+            });
+
+            if (!res.ok) {
+                alert("Failed to submit stationery request");
+                return;
+            }
+
+            router.push("/student");
+        } catch (error) {
+            console.error(error);
+            alert("Something went wrong");
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     return (
         <div className="min-h-screen bg-slate-50 p-6 flex justify-center">
@@ -29,7 +71,10 @@ export default function RequestStationeryPage() {
                 </div>
 
                 {/* Form Card */}
-                <div className="bg-white border border-slate-200 rounded-lg p-6 space-y-5">
+                <form
+                    onSubmit={handleSubmit}
+                    className="bg-white border border-slate-200 rounded-lg p-6 space-y-5"
+                >
                     {/* Item Name */}
                     <div>
                         <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -71,21 +116,21 @@ export default function RequestStationeryPage() {
                         </label>
                         <textarea
                             rows={3}
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
                             placeholder="Blue pen preferred"
                             className="w-full border border-slate-300 rounded-md p-2
-           focus:outline-none focus:ring-2 focus:ring-blue-200
-           focus:border-blue-500"
-
+    focus:outline-none focus:ring-2 focus:ring-blue-200
+    focus:border-blue-500"
                         />
+
                     </div>
 
                     {/* Submit */}
-                    <PrimaryButton disabled={!item || !quantity}>
-                        Submit Stationery Request
+                    <PrimaryButton disabled={loading || !item || !quantity}>
+                        {loading ? "Submitting..." : "Submit Stationery Request"}
                     </PrimaryButton>
-
-
-                </div>
+                </form>
             </div>
         </div>
     );
