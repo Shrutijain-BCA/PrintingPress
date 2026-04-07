@@ -43,7 +43,7 @@ app.use('/api/orders',    orderRoutes)
 app.use('/api/vendor',    vendorRoutes)
 
 // ── Health check ─────────────────────────────────────────────────────────────
-app.get('/api/health', (_req, res) => {
+app.get(process.env.NODE_ENV, (_req, res) => {
   res.json({ success: true, message: 'Printify API is running 🖨️', env: process.env.NODE_ENV })
 })
 
