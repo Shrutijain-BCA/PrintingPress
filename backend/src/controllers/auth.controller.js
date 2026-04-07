@@ -8,11 +8,13 @@ const { success, error } = require('../utils/response')
 exports.register = async (req, res) => {
   try {
     const { name, email, password, role, phone, college, shopName } = req.body
+    console.log("Hehehe",req.body);
 
     const exists = await User.findOne({ email })
     if (exists) return error(res, 'An account with this email already exists.', 409)
 
     const user = await User.create({ name, email, password, role, phone, college, shopName })
+    
 
     // Create default pricing config for vendors
     if (role === 'vendor') {
