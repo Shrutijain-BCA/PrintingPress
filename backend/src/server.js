@@ -22,7 +22,10 @@ connectDB()
 
 // ── Middleware ────────────────────────────────────────────────────────────────
 app.use(cors({
-  origin:      process.env.CLIENT_URL || 'https://printing-press-six.vercel.app',
+  origin: [
+    "http://localhost:5173",
+    "https://printing-press-six.vercel.app"
+  ],
   credentials: true,
 }))
 
@@ -43,7 +46,7 @@ app.use('/api/orders',    orderRoutes)
 app.use('/api/vendor',    vendorRoutes)
 
 // ── Health check ─────────────────────────────────────────────────────────────
-app.get(process.env.NODE_ENV, (_req, res) => {
+app.get('/api/health', (_req, res) => {
   res.json({ success: true, message: 'Printify API is running 🖨️', env: process.env.NODE_ENV })
 })
 
