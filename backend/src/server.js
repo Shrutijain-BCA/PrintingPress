@@ -24,7 +24,8 @@ connectDB()
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://printing-press-six.vercel.app"
+    "https://printing-press-six.vercel.app",
+    "https://printing-press-git-main-shrutijain-bcas-projects.vercel.app"
   ],
   credentials: true,
 }))
