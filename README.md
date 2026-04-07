@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Printify — Full Stack Printing App
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Folder Structure
+```
+PrintingPress/
+├── frontend/   ← React + Vite + Tailwind
+└── backend/    ← Node.js + Express + MongoDB
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Running Locally
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Start Backend
+```bash
+cd backend
+npm install
+# Edit .env → set your MONGODB_URI
+npm run dev
+# Runs on http://localhost:4000
+```
 
-## Learn More
+### 2. Start Frontend
+```bash
+cd frontend
+npm install
+# .env already has VITE_API_URL=http://localhost:4000/api
+npm run dev
+# Runs on http://localhost:5173
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🌍 Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### backend/.env
+```
+PORT=4000
+MONGODB_URI=mongodb+srv://YOUR_USER:YOUR_PASS@cluster.mongodb.net/printify
+JWT_SECRET=your_secret_key_here
+JWT_EXPIRES_IN=7d
+CLIENT_URL=http://localhost:5173
+NODE_ENV=development
+```
 
-## Deploy on Vercel
+### frontend/.env
+```
+VITE_API_URL=http://localhost:4000/api
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📡 API Endpoints
+
+| Method | Endpoint                          | Role    | Description          |
+|--------|-----------------------------------|---------|----------------------|
+| POST   | /api/auth/register                | Public  | Register             |
+| POST   | /api/auth/login                   | Public  | Login                |
+| GET    | /api/auth/me                      | Any     | Get current user     |
+| POST   | /api/documents                    | Student | Upload files         |
+| GET    | /api/documents                    | Student | List my files        |
+| POST   | /api/orders                       | Student | Place order          |
+| GET    | /api/orders                       | Student | My orders            |
+| PATCH  | /api/orders/:id/cancel            | Student | Cancel order         |
+| GET    | /api/vendor/dashboard             | Vendor  | Stats + recent       |
+| GET    | /api/vendor/orders                | Vendor  | All incoming orders  |
+| PATCH  | /api/vendor/orders/:id/status     | Vendor  | Update order status  |
+| GET    | /api/vendor/pricing               | Vendor  | Get pricing          |
+| PUT    | /api/vendor/pricing               | Vendor  | Update pricing       |
+
+---
+
+## 🌐 Deploy
+
+**Frontend → Vercel**
+- Import frontend/ repo
+- Set env: VITE_API_URL=https://your-backend.onrender.com/api
+
+**Backend → Render**
+- Import backend/ repo
+- Set all .env variables
+- Start command: node src/server.js
+
+**Database → MongoDB Atlas**
+- Free M0 cluster
+- Whitelist 0.0.0.0/0
+- Copy connection string to MONGODB_URI
