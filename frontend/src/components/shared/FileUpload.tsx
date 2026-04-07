@@ -49,7 +49,7 @@ export default function FileUpload({ onFilesChange }: Props) {
       return rawFiles.map(f => ({
         name:     f.name,
         size:     f.size,
-        type:     f.mimetype,
+        type:     f.type,
         pages:    Math.ceil(f.size / (1024 * 50)) || 1,
         uploading: false,
         uploadError: 'Upload failed — will retry on order',

@@ -1,6 +1,6 @@
 // src/pages/vendor/VendorDashboard.tsx
 import { useEffect, useState } from 'react'
-import { Package, DollarSign, Clock, CheckCircle, TrendingUp, ArrowRight } from 'lucide-react'
+import { Package, DollarSign, Clock, CheckCircle, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import StatusBadge from '../../components/ui/Badge'
