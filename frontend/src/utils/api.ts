@@ -1,6 +1,8 @@
 // src/utils/api.ts
 const BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
 
+console.log("BASE:", import.meta.env.VITE_API_URL)
+
 function getToken(): string | null {
   return localStorage.getItem('printify_token')
 }
