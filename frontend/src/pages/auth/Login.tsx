@@ -5,6 +5,7 @@ import { Printer, Eye, EyeOff, ArrowRight } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
+import { Zap, IndianRupee, Package } from "lucide-react";
 
 export default function Login() {
   const { login, isAuthenticated, user } = useAuth()
@@ -12,11 +13,11 @@ export default function Login() {
   const location = useLocation()
   const from = (location.state as { from?: { pathname: string } })?.from?.pathname
 
-  const [email, setEmail]       = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPass, setShowPass] = useState(false)
-  const [error, setError]       = useState('')
-  const [loading, setLoading]   = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   if (isAuthenticated && user) {
     navigate(from || (user.role === 'vendor' ? '/vendor' : '/'), { replace: true })
@@ -54,15 +55,23 @@ export default function Login() {
           ))}
         </div>
         <div className="relative z-10 text-center text-white">
-          <div className="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-8 backdrop-blur-sm">
-            <Printer className="w-10 h-10" />
+          <div className="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-8 backdrop-blur-md shadow-lg">
+            <img
+              src="/logo.png"
+              alt="Printify Logo"
+              className="w-12 h-12 object-contain"
+            />
           </div>
-          <h1 className="text-5xl font-black tracking-tight mb-3">Printify</h1>
+          <h1 className="text-5xl font-black tracking-tight mb-3">Queue</h1>
           <p className="text-xl text-orange-100 font-semibold">Print anything. Instantly.</p>
           <div className="mt-12 grid grid-cols-3 gap-4">
-            {[['⚡', 'Fast'], ['💰', 'Cheap'], ['📦', 'Reliable']].map(([icon, label]) => (
+            {[
+              { icon: Zap, label: "Fast" },
+              { icon: IndianRupee, label: "Cheap" },
+              { icon: Package, label: "Reliable" }
+            ].map(({ icon: Icon, label }) => (
               <div key={label} className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
-                <div className="text-2xl mb-1">{icon}</div>
+                <Icon className="w-6 h-6 mb-1 text-orange-200" />
                 <div className="text-sm font-bold text-orange-100">{label}</div>
               </div>
             ))}
