@@ -5,16 +5,16 @@ import { useAuth } from '../../context/AuthContext'
 import { useCart } from '../../context/CartContext'
 
 const navLinks = [
-  { to: '/',        label: 'Home',   icon: Home,         exact: true },
-  { to: '/upload',  label: 'Upload', icon: Upload,        exact: false },
-  { to: '/orders',  label: 'Orders', icon: Package,       exact: false },
-  { to: '/cart',    label: 'Cart',   icon: ShoppingCart,  exact: false },
+  { to: '/', label: 'Home', icon: Home, exact: true },
+  { to: '/upload', label: 'Upload', icon: Upload, exact: false },
+  { to: '/orders', label: 'Orders', icon: Package, exact: false },
+  { to: '/cart', label: 'Cart', icon: ShoppingCart, exact: false },
 ]
 
 export default function StudentLayout() {
   const { user, logout } = useAuth()
-  const { itemCount }    = useCart()
-  const navigate         = useNavigate()
+  const { itemCount } = useCart()
+  const navigate = useNavigate()
 
   const handleLogout = () => { logout(); navigate('/login') }
 
@@ -26,11 +26,12 @@ export default function StudentLayout() {
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
 
           {/* Logo */}
-          <NavLink to="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-[#FF6B00] rounded-lg flex items-center justify-center">
-              <Printer className="w-3.5 h-3.5 text-white" />
-            </div>
-            <span className="font-black text-lg text-gray-900">Queue</span>
+          <NavLink to="/" className="flex items-center">
+            <img
+              src="/nameLogo.png"
+              alt="Queue Logo"
+              className="h-10 object-contain"
+            />
           </NavLink>
 
           {/* Desktop nav */}
@@ -41,8 +42,7 @@ export default function StudentLayout() {
                 to={link.to}
                 end={link.exact}
                 className={({ isActive }) =>
-                  `relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-colors ${
-                    isActive ? 'bg-orange-50 text-[#FF6B00]' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
+                  `relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-colors ${isActive ? 'bg-orange-50 text-[#FF6B00]' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
                   }`
                 }
               >
@@ -64,7 +64,7 @@ export default function StudentLayout() {
                 <User className="w-3 h-3 text-[#FF6B00]" />
               </div>
               <span className="text-xs font-bold text-gray-700">
-                {user?.name.split(' ')[0]}
+                {user?.name}
               </span>
             </div>
             <button
@@ -93,8 +93,7 @@ export default function StudentLayout() {
               to={link.to}
               end={link.exact}
               className={({ isActive }) =>
-                `flex-1 flex flex-col items-center py-2.5 text-[10px] font-bold transition-colors relative ${
-                  isActive ? 'text-[#FF6B00]' : 'text-gray-400'
+                `flex-1 flex flex-col items-center py-2.5 text-[10px] font-bold transition-colors relative ${isActive ? 'text-[#FF6B00]' : 'text-gray-400'
                 }`
               }
             >

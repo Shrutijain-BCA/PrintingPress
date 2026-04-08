@@ -29,7 +29,7 @@ export default function Home() {
       {/* Greeting */}
       <div>
         <p className="text-sm text-gray-500">{greeting},</p>
-        <h1 className="text-2xl font-black text-gray-900">{user?.name?.split(' ')[0]} 👋</h1>
+        <h1 className="text-2xl font-black text-gray-900">{user?.name}</h1>
         {user?.college && <p className="text-xs text-gray-400 mt-0.5">{user.college}</p>}
       </div>
 

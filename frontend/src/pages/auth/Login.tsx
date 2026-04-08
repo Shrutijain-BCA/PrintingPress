@@ -55,11 +55,11 @@ export default function Login() {
           ))}
         </div>
         <div className="relative z-10 text-center text-white">
-          <div className="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-8 backdrop-blur-md shadow-lg">
+          <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-lg overflow-hidden">
             <img
               src="/logo.jpg"
               alt="Queue Logo"
-              className="w-12 h-12 object-contain"
+              className="w-full h-full object-cover scale-125"
             />
           </div>
           <h1 className="text-5xl font-black tracking-tight mb-3">Queue</h1>
