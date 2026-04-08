@@ -7,50 +7,20 @@ PrintingPress/
 └── backend/    ← Node.js + Express + MongoDB
 ```
 
----
-
-## 🚀 Running Locally
-
 ### 1. Start Backend
 ```bash
 cd backend
 npm install
-# Edit .env → set your MONGODB_URI
 npm run dev
-# Runs on http://localhost:4000
-```
 
 ### 2. Start Frontend
 ```bash
 cd frontend
 npm install
-# .env already has VITE_API_URL=http://localhost:4000/api
 npm run dev
-# Runs on http://localhost:5173
-```
 
 ---
-
-## 🌍 Environment Variables
-
-### backend/.env
-```
-PORT=4000
-MONGODB_URI=mongodb+srv://YOUR_USER:YOUR_PASS@cluster.mongodb.net/printify
-JWT_SECRET=your_secret_key_here
-JWT_EXPIRES_IN=7d
-CLIENT_URL=http://localhost:5173
-NODE_ENV=development
-```
-
-### frontend/.env
-```
-VITE_API_URL=http://localhost:4000/api
-```
-
----
-
-## 📡 API Endpoints
+## API Endpoints
 
 | Method | Endpoint                          | Role    | Description          |
 |--------|-----------------------------------|---------|----------------------|
@@ -70,18 +40,116 @@ VITE_API_URL=http://localhost:4000/api
 
 ---
 
-## 🌐 Deploy
 
-**Frontend → Vercel**
-- Import frontend/ repo
-- Set env: VITE_API_URL=https://your-backend.onrender.com/api
+# Printing Press Management System
 
-**Backend → Render**
-- Import backend/ repo
-- Set all .env variables
-- Start command: node src/server.js
+A full-stack web application that connects **students and vendors** for seamless printing services.
+Built with modern technologies and deployed on cloud platforms.
 
-**Database → MongoDB Atlas**
-- Free M0 cluster
-- Whitelist 0.0.0.0/0
-- Copy connection string to MONGODB_URI
+---
+
+## Live Demo
+
+* Frontend: https://printing-press-git-main-shrutijain-bcas-projects.vercel.app/
+* Backend API: https://printingpress-backend.onrender.com
+
+---
+
+##  Features
+
+*  User Authentication (Register/Login with JWT)
+*  Student & Vendor roles
+*  Upload and manage documents
+*  Order placement system
+*  Vendor dashboard
+*  Protected routes with authentication
+*  Fully deployed (Frontend + Backend)
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* React.js / Vite
+* TypeScript
+* Tailwind CSS
+
+### Backend
+
+* Node.js
+* Express.js
+* MongoDB (Mongoose)
+
+### Deployment
+
+* Vercel (Frontend)
+* Render (Backend)
+
+---
+
+## Project Structure
+
+```
+printingpress/
+│
+├── frontend/        # React frontend
+├── backend/         # Express backend
+│   ├── routes/
+│   ├── controllers/
+│   ├── models/
+│   └── config/
+│
+└── README.md
+```
+
+---
+
+##  Running Locally
+
+### 1. Clone the repository
+
+```
+git clone https://github.com/your-username/PrintingPress.git
+cd PrintingPress
+```
+
+### 2. Setup Backend
+
+```
+cd backend
+npm install
+npm run dev
+```
+
+### 3. Setup Frontend
+
+```
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## Future Enhancements
+
+* Online payment integration (Razorpay/Stripe)
+* Location-based vendor matching
+* Order tracking system
+* Advanced analytics dashboard
+
+---
+
+## Author
+
+**Shruti Jain** **Tanisha Rajput**
+
+* MCA Students
+
+---
+
+## Show your support
+
+If you like this project, give it a ⭐ on GitHub!
+
