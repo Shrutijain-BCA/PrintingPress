@@ -140,7 +140,7 @@ export default function Login() {
 
           <div className="mt-8 p-5 bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 rounded-xl text-center">
             <img
-              src="frontend\public\krmu-logo.jfif"
+              src="frontend\public\krmu-logo.jpg"
               alt="KR Mangalam University"
               className="w-12 h-12 mx-auto mb-2 object-contain"
             />
