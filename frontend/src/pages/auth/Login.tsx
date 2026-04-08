@@ -138,12 +138,20 @@ export default function Login() {
             </Link>
           </p>
 
-          <div className="mt-8 p-4 bg-orange-50 border border-orange-200 rounded-xl">
-            <p className="text-xs font-bold text-orange-800 mb-2">Demo Credentials</p>
-            <div className="space-y-1 text-xs text-orange-700 font-medium">
-              <p>Student: student@demo.com / demo123</p>
-              <p>Vendor:  vendor@demo.com  / demo123</p>
-            </div>
+          <div className="mt-8 p-5 bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 rounded-xl text-center">
+            <img
+              src="frontend\public\krmu-logo.jfif"
+              alt="KR Mangalam University"
+              className="w-12 h-12 mx-auto mb-2 object-contain"
+            />
+            <p className="text-xs font-bold text-orange-800">Academic Project</p>
+            <a
+              href="https://www.krmangalam.edu.in"
+              target="_blank"
+              className="text-xs text-orange-700 font-medium hover:underline"
+            >
+              KR Mangalam University
+            </a>
           </div>
         </div>
       </div>
