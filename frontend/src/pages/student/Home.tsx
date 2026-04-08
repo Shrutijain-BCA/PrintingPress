@@ -77,7 +77,7 @@ export default function Home() {
 
       {/* Why us */}
       <section>
-        <h2 className="text-base font-black text-gray-900 mb-3">Why Printify?</h2>
+        <h2 className="text-base font-black text-gray-900 mb-3">Why Queue?</h2>
         <div className="space-y-2.5">
           {whyUs.map(w => (
             <div key={w.title} className="flex items-center gap-4 bg-white rounded-2xl p-4 border border-gray-100">

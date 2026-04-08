@@ -45,7 +45,7 @@ export default function Register() {
             <Printer className="w-7 h-7 text-white" />
           </div>
           <h1 className="text-3xl font-black text-gray-900">Create Account</h1>
-          <p className="text-gray-500 mt-1">Join Printify today</p>
+          <p className="text-gray-500 mt-1">Join Queue today</p>
         </div>
 
         {/* Step 1 — Role picker */}

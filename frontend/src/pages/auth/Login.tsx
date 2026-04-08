@@ -58,12 +58,12 @@ export default function Login() {
           <div className="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-8 backdrop-blur-md shadow-lg">
             <img
               src="frontend\public\logo.jpg"
-              alt="Printify Logo"
+              alt="Queue Logo"
               className="w-12 h-12 object-contain"
             />
           </div>
           <h1 className="text-5xl font-black tracking-tight mb-3">Queue</h1>
-          <p className="text-xl text-orange-100 font-semibold">Print anything. Instantly.</p>
+          <p className="text-xl text-orange-100 font-semibold">Queue From Anywhere.</p>
           <div className="mt-12 grid grid-cols-3 gap-4">
             {[
               { icon: Zap, label: "Fast" },
@@ -86,7 +86,7 @@ export default function Login() {
             <div className="w-9 h-9 bg-[#FF6B00] rounded-xl flex items-center justify-center">
               <Printer className="w-5 h-5 text-white" />
             </div>
-            <span className="text-2xl font-black text-gray-900">Printify</span>
+            <span className="text-2xl font-black text-gray-900">Queue</span>
           </div>
 
           <h2 className="text-3xl font-black text-gray-900 mb-1">Welcome back</h2>

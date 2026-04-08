@@ -29,7 +29,7 @@ export default function VendorLayout() {
               <Printer className="w-4 h-4 text-white" />
             </div>
             <div>
-              <div className="font-black text-white text-sm">Printify</div>
+              <div className="font-black text-white text-sm">Queue</div>
               <div className="text-[10px] text-gray-500 font-medium">Vendor Panel</div>
             </div>
           </div>

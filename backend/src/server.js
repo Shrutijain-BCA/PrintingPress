@@ -48,7 +48,7 @@ app.use('/api/vendor',    vendorRoutes)
 
 // ── Health check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
-  res.json({ success: true, message: 'Printify API is running 🖨️', env: process.env.NODE_ENV })
+  res.json({ success: true, message: 'Queue API is running 🖨️', env: process.env.NODE_ENV })
 })
 
 // ── 404 handler ───────────────────────────────────────────────────────────────

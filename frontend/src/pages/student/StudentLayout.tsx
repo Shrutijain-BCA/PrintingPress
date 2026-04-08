@@ -30,7 +30,7 @@ export default function StudentLayout() {
             <div className="w-7 h-7 bg-[#FF6B00] rounded-lg flex items-center justify-center">
               <Printer className="w-3.5 h-3.5 text-white" />
             </div>
-            <span className="font-black text-lg text-gray-900">Printify</span>
+            <span className="font-black text-lg text-gray-900">Queue</span>
           </NavLink>
 
           {/* Desktop nav */}
