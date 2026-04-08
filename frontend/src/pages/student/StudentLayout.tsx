@@ -1,6 +1,6 @@
 // src/pages/student/StudentLayout.tsx
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
-import { Printer, Upload, ShoppingCart, Package, LogOut, User, Home } from 'lucide-react'
+import {Upload, ShoppingCart, Package, LogOut, User, Home } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { useCart } from '../../context/CartContext'
 
