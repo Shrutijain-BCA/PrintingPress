@@ -57,7 +57,7 @@ export default function Login() {
         <div className="relative z-10 text-center text-white">
           <div className="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-8 backdrop-blur-md shadow-lg">
             <img
-              src="/logo.png"
+              src="frontend\public\logo.jpg"
               alt="Printify Logo"
               className="w-12 h-12 object-contain"
             />
