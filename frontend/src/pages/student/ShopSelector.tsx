@@ -1,6 +1,6 @@
 // src/pages/student/ShopSelector.tsx
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Store, MapPin, Phone, ChevronRight, Star, Package } from 'lucide-react'
+import { Store, MapPin, Phone, ChevronRight, Star } from 'lucide-react'
 import { useShops } from '../../hooks/useShops'
 import Spinner from '../../components/ui/Spinner'
 

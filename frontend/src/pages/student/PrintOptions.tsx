@@ -45,7 +45,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export default function PrintOptions() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { addItem } = useCart()
+  // const { addItem } = useCart()
   const files: DocumentFile[] = location.state?.files || []
 
   const [opts, setOpts] = useState<Opts>({
