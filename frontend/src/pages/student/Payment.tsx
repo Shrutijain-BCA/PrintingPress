@@ -21,7 +21,7 @@ export default function Payment() {
 
   const [loading, setLoading]     = useState(false)
   const [error, setError]         = useState('')
-  const [breakdown, setBreakdown] = useState<PaymentBreakdown | null>(null)
+  const [, setBreakdown] = useState<PaymentBreakdown | null>(null)
 
   // Calculate breakdown instantly from price
   const totalAmount    = price || 0

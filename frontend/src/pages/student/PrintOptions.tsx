@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Store, ChevronRight } from 'lucide-react'
-import { useCart } from '../../context/CartContext'
+// import { useCart } from '../../context/CartContext'
 import { calculatePrice } from '../../utils/pricing'
 import type { PrintOptions as Opts, DocumentFile } from '../../types'
 
