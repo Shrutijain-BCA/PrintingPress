@@ -8,10 +8,16 @@ const Wallet  = require('../models/Wallet')
 const { success, error } = require('../utils/response')
 
 // Initialize Razorpay
-const razorpay = new Razorpay({
-  RAZORPAY_KEY_ID:     process.env.RAZORPAY_KEY_ID,
-  RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
-})
+// Initialize Razorpay lazily so env vars are loaded first
+const getRazorpay = () => {
+  if (!process.env.RAZORPAY_KEY_ID) {
+    throw new Error('RAZORPAY_KEY_ID is not set in environment variables')
+  }
+  return new Razorpay({
+    key_id:     process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+  })
+}
 
 // ── Create Razorpay Order ─────────────────────────────────────────────────────
 exports.createPaymentOrder = async (req, res) => {
