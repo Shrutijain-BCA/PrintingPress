@@ -87,3 +87,62 @@ export interface VendorPricing {
   premiumPaper: number
   deliveryFee: number
 }
+
+// ─── Shop ─────────────────────────────────────────────────────────────────────
+
+export interface Shop {
+  _id: string
+  name: string
+  ownerName: string
+  phone: string
+  address: string
+  totalOrders: number
+  completedOrders: number
+  completionRate: number
+  memberSince: string
+  pricing: VendorPricing
+}
+
+// ─── Payment ──────────────────────────────────────────────────────────────────
+
+export interface PaymentBreakdown {
+  totalAmount: number
+  upfrontAmount: number
+  platformFee: number
+  amountPaid: number
+  remainingAmount: number
+}
+
+export interface Payment {
+  _id: string
+  order: string
+  razorpayOrderId: string
+  razorpayPaymentId?: string
+  status: 'created' | 'paid' | 'failed' | 'refunded' | 'partially_refunded'
+  totalAmount: number
+  upfrontAmount: number
+  platformFee: number
+  amountPaid: number
+  remainingAmount: number
+  refundAmount?: number
+  refundedAt?: string
+}
+
+// ─── Wallet ───────────────────────────────────────────────────────────────────
+
+export interface WalletTransaction {
+  _id: string
+  type: 'credit' | 'debit'
+  amount: number
+  description: string
+  orderId?: string
+  status: 'pending' | 'completed' | 'failed'
+  createdAt: string
+}
+
+export interface Wallet {
+  _id: string
+  user: string
+  balance: number
+  transactions: WalletTransaction[]
+}

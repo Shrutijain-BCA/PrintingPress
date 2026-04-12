@@ -1,7 +1,7 @@
 // src/pages/student/PrintOptions.tsx
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { ShoppingCart, ChevronRight } from 'lucide-react'
+import { Store, ChevronRight } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
 import { calculatePrice } from '../../utils/pricing'
 import type { PrintOptions as Opts, DocumentFile } from '../../types'
@@ -14,11 +14,10 @@ function Chip({
   return (
     <button
       onClick={onClick}
-      className={`flex-1 py-3 px-3 rounded-xl border-2 text-sm font-semibold transition-all active:scale-95 text-left ${
-        active
+      className={`flex-1 py-3 px-3 rounded-xl border-2 text-sm font-semibold transition-all active:scale-95 text-left ${active
           ? 'border-[#FF6B00] bg-orange-50 text-[#FF6B00]'
           : 'border-gray-200 text-gray-700 hover:border-gray-300 bg-white'
-      }`}
+        }`}
     >
       <div>{label}</div>
       {sub && (
@@ -44,9 +43,9 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 /* ── Component ───────────────────────────────────────────────────────────── */
 
 export default function PrintOptions() {
-  const navigate       = useNavigate()
-  const location       = useLocation()
-  const { addItem }    = useCart()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { addItem } = useCart()
   const files: DocumentFile[] = location.state?.files || []
 
   const [opts, setOpts] = useState<Opts>({
@@ -58,11 +57,12 @@ export default function PrintOptions() {
     setOpts(o => ({ ...o, [k]: v }))
 
   const totalPages = files.reduce((s, f) => s + (f.pages || 0), 0)
-  const price      = calculatePrice(opts, totalPages)
+  const price = calculatePrice(opts, totalPages)
 
   const handleAddToCart = () => {
-    addItem(files, opts, price)
-    navigate('/cart')
+    navigate('/shops', {
+      state: { files, options: opts, price }
+    })
   }
 
   return (
@@ -76,8 +76,8 @@ export default function PrintOptions() {
 
       <Section title="Color Mode">
         <div className="flex gap-3">
-          <Chip label="Black & White" sub="₹0.50–0.80/page" active={opts.colorMode === 'bw'}    onClick={() => set('colorMode', 'bw')} />
-          <Chip label="Color"         sub="₹5–8/page"        active={opts.colorMode === 'color'} onClick={() => set('colorMode', 'color')} />
+          <Chip label="Black & White" sub="₹0.50–0.80/page" active={opts.colorMode === 'bw'} onClick={() => set('colorMode', 'bw')} />
+          <Chip label="Color" sub="₹5–8/page" active={opts.colorMode === 'color'} onClick={() => set('colorMode', 'color')} />
         </div>
       </Section>
 
@@ -90,25 +90,25 @@ export default function PrintOptions() {
 
       <Section title="Print Sides">
         <div className="flex gap-3">
-          <Chip label="Single Sided"               active={opts.sides === 'single'} onClick={() => set('sides', 'single')} />
-          <Chip label="Double Sided" sub="Eco 🌱"  active={opts.sides === 'double'} onClick={() => set('sides', 'double')} />
+          <Chip label="Single Sided" active={opts.sides === 'single'} onClick={() => set('sides', 'single')} />
+          <Chip label="Double Sided" sub="Eco 🌱" active={opts.sides === 'double'} onClick={() => set('sides', 'double')} />
         </div>
       </Section>
 
       <Section title="Paper Quality">
         <div className="flex gap-3">
-          <Chip label="Standard" sub="70 GSM"        active={opts.paperQuality === 'standard'} onClick={() => set('paperQuality', 'standard')} />
-          <Chip label="Premium"  sub="+₹0.20/page"   active={opts.paperQuality === 'premium'}  onClick={() => set('paperQuality', 'premium')} />
+          <Chip label="Standard" sub="70 GSM" active={opts.paperQuality === 'standard'} onClick={() => set('paperQuality', 'standard')} />
+          <Chip label="Premium" sub="+₹0.20/page" active={opts.paperQuality === 'premium'} onClick={() => set('paperQuality', 'premium')} />
         </div>
       </Section>
 
       <Section title="Binding">
         <div className="grid grid-cols-2 gap-3">
           {([
-            { v: 'none',   label: 'No Binding',     sub: 'Free' },
-            { v: 'tape',   label: 'Tape Binding',   sub: '₹20'  },
-            { v: 'spiral', label: 'Spiral Binding', sub: '₹30'  },
-            { v: 'hard',   label: 'Hard Binding',   sub: '₹150' },
+            { v: 'none', label: 'No Binding', sub: 'Free' },
+            { v: 'tape', label: 'Tape Binding', sub: '₹20' },
+            { v: 'spiral', label: 'Spiral Binding', sub: '₹30' },
+            { v: 'hard', label: 'Hard Binding', sub: '₹150' },
           ] as const).map(b => (
             <Chip
               key={b.v} label={b.label} sub={b.sub}
@@ -145,8 +145,8 @@ export default function PrintOptions() {
               onClick={handleAddToCart}
               className="bg-white text-[#FF6B00] font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 hover:bg-orange-50 transition-colors active:scale-95 text-sm"
             >
-              <ShoppingCart className="w-4 h-4" />
-              Add to Cart
+              <Store className="w-4 h-4" />
+              Choose Print Shop
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>

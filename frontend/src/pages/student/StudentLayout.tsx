@@ -1,14 +1,15 @@
 // src/pages/student/StudentLayout.tsx
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
-import {Upload, ShoppingCart, Package, LogOut, User, Home } from 'lucide-react'
+import {Upload, ShoppingCart, Package, LogOut, User, Home, Wallet } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { useCart } from '../../context/CartContext'
 
 const navLinks = [
-  { to: '/', label: 'Home', icon: Home, exact: true },
-  { to: '/upload', label: 'Upload', icon: Upload, exact: false },
-  { to: '/orders', label: 'Orders', icon: Package, exact: false },
-  { to: '/cart', label: 'Cart', icon: ShoppingCart, exact: false },
+  { to:'/',        label:'Home',   icon:Home,         exact:true  },
+  { to:'/upload',  label:'Upload', icon:Upload,        exact:false },
+  { to:'/orders',  label:'Orders', icon:Package,       exact:false },
+  { to:'/wallet',  label:'Wallet', icon:Wallet,        exact:false },
+  { to:'/cart',    label:'Cart',   icon:ShoppingCart,  exact:false },
 ]
 
 export default function StudentLayout() {
