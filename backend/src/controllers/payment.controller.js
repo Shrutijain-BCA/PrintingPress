@@ -41,7 +41,7 @@ exports.createPaymentOrder = async (req, res) => {
     const finalAmount = Math.max(Math.round(amountPaid * 100), 100)
 
     // Create Razorpay order (amount in paise)
-    const razorpayOrder = await razorpay.orders.create({
+    const razorpayOrder = await getRazorpay().orders.create({
       amount:   finalAmount,
       currency: 'INR',
       receipt:  `rcpt_${order._id.toString().slice(-8)}`,
@@ -138,7 +138,7 @@ exports.processRefund = async (orderId, reason, cancelledByStudent = false) => {
 
   // Razorpay refund
   try {
-    const refund = await razorpay.payments.refund(payment.razorpayPaymentId, {
+    const refund = await getRazorpay().payments.refund(payment.razorpayPaymentId, {
       amount: Math.round(refundAmount * 100), // paise
       notes:  { reason },
     })
