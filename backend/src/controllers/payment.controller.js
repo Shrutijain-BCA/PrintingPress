@@ -31,11 +31,14 @@ exports.createPaymentOrder = async (req, res) => {
     const amountPaid     = upfrontAmount + platformFee
     const remainingAmount = totalAmount - upfrontAmount
 
+    // Razorpay minimum is ₹1 (100 paise)
+    const finalAmount = Math.max(Math.round(amountPaid * 100), 100)
+
     // Create Razorpay order (amount in paise)
     const razorpayOrder = await razorpay.orders.create({
-      amount:   Math.round(amountPaid * 100),
+      amount:   finalAmount,
       currency: 'INR',
-      receipt:  `order_${order._id}`,
+      receipt:  `rcpt_${order._id.toString().slice(-8)}`,
       notes: {
         orderId:    order._id.toString(),
         studentId:  req.user._id.toString(),
@@ -71,7 +74,8 @@ exports.createPaymentOrder = async (req, res) => {
     }, 'Payment order created')
 
   } catch (err) {
-    return error(res, err.message)
+    console.error('Payment error:', err)
+    return error(res, err.message || 'Payment creation failed')
   }
 }
 
