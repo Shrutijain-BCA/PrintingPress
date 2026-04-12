@@ -38,7 +38,7 @@ export default function VendorDashboard() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-black text-gray-900">{user?.shopName || 'Dashboard'} 👋</h1>
+        <h1 className="text-2xl font-black text-gray-900">{user?.shopName || 'Dashboard'}</h1>
         <p className="text-sm text-gray-400 mt-1">
           {new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}
         </p>
@@ -89,7 +89,7 @@ export default function VendorDashboard() {
 
       {/* Quick tip */}
       <div className="bg-orange-50 border border-orange-200 rounded-2xl p-4">
-        <p className="text-xs font-bold text-orange-700 mb-1">💡 Tip</p>
+        <p className="text-xs font-bold text-orange-700 mb-1">Tip</p>
         <p className="text-sm text-orange-600">Accept pending orders quickly to improve your rating.</p>
       </div>
     </div>

@@ -3,6 +3,7 @@ const Order    = require('../models/Order')
 const Document = require('../models/Document')
 const Pricing  = require('../models/Pricing')
 const User     = require('../models/User')
+const { processRefund } = require('./payment.controller')
 const { calculatePrice } = require('../utils/pricing')
 const { success, error } = require('../utils/response')
 
@@ -23,28 +24,32 @@ exports.createOrder = async (req, res) => {
     if (docs.length !== documentIds.length)
       return error(res, 'One or more documents not found or not yours.', 404)
 
-    // Find a vendor (for now pick the first active vendor — in production use location/rating)
-    const vendor = await User.findOne({ role: 'vendor', isActive: true })
+    // Use selected shop chosen by student
+    const { shopId } = req.body
+    if (!shopId) return error(res, 'Please select a print shop.', 400)
 
-    // Get vendor pricing if vendor exists
-    let pricing = null
-    if (vendor) {
-      pricing = await Pricing.findOne({ vendor: vendor._id })
-    }
+    const vendor = await User.findOne({ _id: shopId, role: 'vendor', isActive: true })
+    if (!vendor) return error(res, 'Selected shop not found.', 404)
+
+    // Get vendor pricing
+    let pricing = await Pricing.findOne({ vendor: vendor._id })
 
     const totalPages = docs.reduce((sum, d) => sum + d.pageCount, 0)
     const totalPrice = calculatePrice(printOptions, totalPages, pricing || undefined)
 
     const order = await Order.create({
       student:      req.user._id,
-      vendor:       vendor?._id,
+      vendor:       vendor._id,
+      selectedShop: vendor._id,
       documents:    docs.map(d => ({ document: d._id, fileName: d.fileName, pageCount: d.pageCount })),
       printOptions,
       totalPages,
       totalPrice,
       notes,
-      deliveryType: deliveryType || 'pickup',
-      statusHistory: [{ status: 'pending', updatedBy: req.user._id }],
+      deliveryType:  deliveryType || 'pickup',
+      paymentStatus: 'pending',
+      status:        'pending_payment',  // wait for payment before showing to vendor
+      statusHistory: [{ status: 'pending_payment', updatedBy: req.user._id }],
     })
 
     const populated = await order.populate(['student', 'vendor'])
@@ -100,8 +105,18 @@ exports.cancelOrder = async (req, res) => {
     const order = await Order.findOne({ _id: req.params.id, student: req.user._id })
     if (!order) return error(res, 'Order not found.', 404)
 
-    if (!['pending'].includes(order.status))
+    if (!['pending_payment', 'pending'].includes(order.status))
       return error(res, 'Only pending orders can be cancelled.', 400)
+
+    // If already paid → refund upfront only (platform fee kept)
+    if (order.paymentStatus === 'paid') {
+      await processRefund(
+        order._id,
+        'Order cancelled by student. Upfront amount refunded to wallet (platform fee deducted).',
+        true  // cancelled by student
+      )
+      order.paymentStatus = 'refunded'
+    }
 
     order.status = 'cancelled'
     order.statusHistory.push({ status: 'cancelled', updatedBy: req.user._id })

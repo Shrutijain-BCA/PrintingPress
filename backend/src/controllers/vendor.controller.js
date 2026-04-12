@@ -1,6 +1,7 @@
 // src/controllers/vendor.controller.js
 const Order   = require('../models/Order')
 const Pricing = require('../models/Pricing')
+const { processRefund } = require('./payment.controller')
 const { success, error } = require('../utils/response')
 
 // ── Get all incoming orders ───────────────────────────────────────────────────
@@ -61,7 +62,20 @@ exports.updateOrderStatus = async (req, res) => {
 
     order.status = status
     order.statusHistory.push({ status, updatedBy: req.user._id, note })
-    if (status === 'rejected' && rejectionReason) order.rejectionReason = rejectionReason
+
+    if (status === 'rejected') {
+      if (rejectionReason) order.rejectionReason = rejectionReason
+
+      // Process full refund to student wallet
+      if (order.paymentStatus === 'paid') {
+        await processRefund(
+          order._id,
+          `Order rejected by shop. Full refund credited to wallet.`,
+          false  // not cancelled by student so full refund
+        )
+        order.paymentStatus = 'refunded'
+      }
+    }
 
     await order.save()
     const populated = await order.populate('student', 'name email phone')

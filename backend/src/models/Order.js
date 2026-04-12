@@ -47,8 +47,8 @@ const orderSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ['pending', 'accepted', 'printing', 'ready', 'delivered', 'rejected', 'cancelled'],
-      default: 'pending',
+      enum: ['pending_payment', 'pending', 'accepted', 'printing', 'ready', 'delivered', 'rejected', 'cancelled'],
+      default: 'pending_payment',
     },
 
     statusHistory: [statusHistorySchema],
@@ -56,6 +56,9 @@ const orderSchema = new mongoose.Schema(
     notes:          { type: String },          // student notes
     rejectionReason:{ type: String },          // vendor rejection reason
     deliveryType:   { type: String, enum: ['pickup', 'delivery'], default: 'pickup' },
+    paymentStatus:  { type: String, enum: ['pending', 'paid', 'refunded'], default: 'pending' },
+    vendor:         { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    selectedShop:   { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   { timestamps: true }
 )

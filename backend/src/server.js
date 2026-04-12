@@ -13,6 +13,8 @@ const authRoutes     = require('./routes/auth.routes')
 const documentRoutes = require('./routes/document.routes')
 const orderRoutes    = require('./routes/order.routes')
 const vendorRoutes   = require('./routes/vendor.routes')
+const paymentRoutes  = require('./routes/payment.routes')
+const shopRoutes     = require('./routes/shop.routes')
 
 // ── App setup ─────────────────────────────────────────────────────────────────
 const app = express()
@@ -45,6 +47,8 @@ app.use('/api/auth',      authRoutes)
 app.use('/api/documents', documentRoutes)
 app.use('/api/orders',    orderRoutes)
 app.use('/api/vendor',    vendorRoutes)
+app.use('/api/payments',  paymentRoutes)
+app.use('/api/shops',     shopRoutes)
 
 // ── Health check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
